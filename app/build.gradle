@@ -1,0 +1,35 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        applicationId "com.chad.baserecyclerviewadapterhelper"
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 5
+        versionName "2.1"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        
+    }
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(path: ':library')
+    implementation project(':material-spinner-1.0.5')
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.kyleduo.switchbutton:library:2.0.0'
+    implementation 'com.orhanobut:logger:2.2.0'
+}
