@@ -1,10 +1,14 @@
 apply plugin: 'com.android.library'
+
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
+        //noinspection MinSdkTooLow
         minSdkVersion 11
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -20,33 +24,125 @@ android {
 
 
 }
+//
+//// 打包源码jar
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//
+//task javadoc(type: Javadoc) {
+//    failOnError false
+//    source = android.sourceSets.main.java.sourceFiles
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    classpath += configurations.compile
+//}
 
-// 打包源码jar
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
+//// 打包文档jar
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
 
-task javadoc(type: Javadoc) {
-    failOnError  false
-    source = android.sourceSets.main.java.sourceFiles
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
-}
-
-// 打包文档jar
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
+//artifacts {
+//    archives sourcesJar
+//    archives javadocJar
+//}
 
 dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    compileOnly 'androidx.recyclerview:recyclerview:1.0.0'
+    compileOnly 'androidx.recyclerview:recyclerview:1.1.0'
+}
+
+// 项目引用的版本号
+version = "0.0.1"
+// 定义两个链接，下面会用到。
+// 项目主页。
+def siteUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper-2.9.45-androidx'
+// Git仓库的url。
+def gitUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper-2.9.45-androidx.git'
+// 唯一包名
+group = "com.jackiepenghe"
+install {
+    repositories.mavenInstaller {
+        // 生成pom.xml和参数
+        pom {
+            project {
+                packaging 'aar'
+                // 项目描述，这里需要修改。
+                name 'BRVAH'// 可选，项目名称。
+                description 'The BRVAH for androidx library'// 可选，项目描述。
+                url siteUrl// 项目主页，这里是引用上面定义好。
+                // 软件开源协议，现在一般都是Apache License2.0
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                //填写开发者基本信息，这里需要修改。
+                developers {
+                    developer {
+                        id 'jackiepenghe'// 开发者的id。
+                        name 'jackiepenghe'// 开发者名字。
+                        email 'p15583101939@gmail.com'// 开发者邮箱。
+                    }
+                }
+                // SCM，复制我的，这里不需要修改。
+                scm {
+                    connection gitUrl// Git仓库地址。
+                    developerConnection gitUrl// Git仓库地址。
+                    url siteUrl// 项目主页。
+                }
+            }
+        }
+    }
+}
+// 生成jar包的task，不需要修改。
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+// 生成jarDoc的task，不需要修改。
+task javadoc(type: Javadoc) {
+    options { //如果项目包含中文，最好配置上options,如果没有中文，options这一整项可不要
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+// destinationDir = file("../javadoc/")
+// 忽略注释语法错误，如果用jdk1.8你的注释写的不规范就编译不过。（如果电脑上有JDK1.9，配置之后还报错，一定要卸载JDK1.9，切记）
+    failOnError false
+}
+// 生成javaDoc的jar，不需要修改。
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+// 这里是读取Bintray相关的信息，我们上传项目到github上的时候会把gradle文件传上去，所以不要把帐号密码的信息直接写在这里，写在local.properties中，这里动态读取。
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+bintray {
+    user = properties.getProperty("bintray.user")// Bintray的用户名。
+    key = properties.getProperty("bintray.apikey")// Bintray刚才保存的ApiKey。
+    configurations = ['archives']
+    pkg {
+        repo = "maven"// 上传到maven库。
+        // 发布到Bintray上的项目名字，就和github上你每个项目的名字一样。
+        name = "baselibrary"
+        userOrg = 'jackiepenghe' // Bintray的用户名。
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true// 是否是公开项目。
+    }
 }
