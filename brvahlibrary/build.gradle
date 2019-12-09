@@ -63,7 +63,7 @@ def siteUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper-2.9
 // Git仓库的url。
 def gitUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper-2.9.45-androidx.git'
 // 唯一包名
-group = "com.jackiepenghe"
+group = "com.sscl"
 install {
     repositories.mavenInstaller {
         // 生成pom.xml和参数
@@ -138,8 +138,8 @@ bintray {
     pkg {
         repo = "maven"// 上传到maven库。
         // 发布到Bintray上的项目名字，就和github上你每个项目的名字一样。
-        name = "baselibrary"
-        userOrg = 'jackiepenghe' // Bintray的用户名。
+        name = "brvah-x"
+        userOrg = 'sscl' // Bintray的用户名。
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
