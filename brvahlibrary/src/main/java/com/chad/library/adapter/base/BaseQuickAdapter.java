@@ -159,6 +159,13 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     /**
+     * same as recyclerView.setAdapter(), and save the instance of recyclerView
+     */
+    public void unbindToRecyclerView() {
+        mRecyclerView = null;
+    }
+
+    /**
      * @see #setOnLoadMoreListener(RequestLoadMoreListener, RecyclerView)
      * @deprecated This method is because it can lead to crash: always call this method while RecyclerView is computing a layout or scrolling.
      * Please use {@link #setOnLoadMoreListener(RequestLoadMoreListener, RecyclerView)}
@@ -1354,7 +1361,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
 
     /**
      * bind recyclerView {@link #bindToRecyclerView(RecyclerView)} before use!
-     * Recommend you to use {@link #setEmptyView(layoutResId,viewGroup)}
+     * Recommend you to use {@link BaseQuickAdapter#setEmptyView(layoutResId,viewGroup)}
      * @see #bindToRecyclerView(RecyclerView)
      *
      */

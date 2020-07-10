@@ -56,12 +56,12 @@ dependencies {
 }
 
 // 项目引用的版本号
-version = "0.0.1"
+version = "0.0.2"
 // 定义两个链接，下面会用到。
 // 项目主页。
-def siteUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper-2.9.45-androidx'
+def siteUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper'
 // Git仓库的url。
-def gitUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper-2.9.45-androidx.git'
+def gitUrl = 'https://github.com/JackiePenghe/BaseRecyclerViewAdapterHelper.git'
 // 唯一包名
 group = "com.sscl"
 install {
